@@ -122,6 +122,7 @@ if __name__ == '__main__':
             mp3_url = search_music(music_name)
             if not mp3_url:
                 continue
+                time.sleep(2)
             else:
                 is_download = download_music(music_name, mp3_url)
 
