@@ -14,7 +14,7 @@ import time
 import os
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.alert import Alert
-
+    
 sys.setrecursionlimit(100000)
 driver_path = r"C:\Users\Administrator\AppData\Local\Google\Chrome\Application\chromedriver.exe"
 
