@@ -74,9 +74,7 @@ class ZhongTongMp3UrlThread(threading.Thread):
             input_element = WebDriverWait(self.browser, 10).until(
                 EC.presence_of_element_located((By.XPATH, '//input[@type="text"]'))
             )
-            for m in music_name:
-                input_element.send_keys(m)
-                time.sleep(np.random.random())
+            input_element.send_keys(music_name)
         except Exception as e:
             print('输入歌名失败:', e)
             self.browser.quit()
