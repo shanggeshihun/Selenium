@@ -58,7 +58,9 @@ class ZhongTongMp3UrlThread(threading.Thread):
             except:
                 pass
             else:
+                print()
                 self.search_music(music_name)
+
         self.browser.quit()
 
     def search_music(self, music_name):
@@ -67,7 +69,12 @@ class ZhongTongMp3UrlThread(threading.Thread):
         :param music_name:搜索歌曲名称
         :return: 返回歌曲下载链接列表
         '''
-        self.browser.get(HOME_PAGE_URL)
+
+        try:
+            self.browser.get(HOME_PAGE_URL)
+        except Exception as e:
+            print(f'{music_name} 主页访问失败', e)
+            return None
 
         # 输入歌名
         try:
@@ -145,7 +152,10 @@ class DownloadMusicThread(threading.Thread):
         if response.status_code == 200:
             with open(os.path.join(MUSIC_DOWNLOAD_DIR, f'{music_name}.mp3'), "wb") as fp:
                 fp.write(response.content)
-        print(response.status_code)
+        else:
+            print(f'{music_name} {mp3_url} 下载失败')
+
+
 
 def main():
     # 音乐名称队列
