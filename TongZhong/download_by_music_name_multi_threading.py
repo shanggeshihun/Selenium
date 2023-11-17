@@ -3,7 +3,7 @@
 # @Time     :2023/11/15 7:24
 # @Author   :anliu
 # @File     :download_by_music_name.py
-# @Theme    :PyCharm
+# @Theme    :注意 最后会自动退出线程，因此不需要在脚本中体现 browser.quit()
 
 import requests, time, os, warnings, threading
 import numpy as np
@@ -49,6 +49,7 @@ class ZhongTongMp3UrlThread(threading.Thread):
         self.music_url_queue = music_url_queue
 
     def run(self):
+        print('当前线程',threading.current_thread().name)
         while MUSIC_QUEUE_NOT_EMPTY:
             try:
                 thread_lock.acquire()
@@ -58,10 +59,12 @@ class ZhongTongMp3UrlThread(threading.Thread):
             except:
                 pass
             else:
-                print()
+                print('当前线程', threading.current_thread().name, music_name)
                 self.search_music(music_name)
 
-        self.browser.quit()
+        if self.browser:
+            # self.browser.quit()
+            return
 
     def search_music(self, music_name):
         '''
@@ -84,7 +87,7 @@ class ZhongTongMp3UrlThread(threading.Thread):
             input_element.send_keys(music_name)
         except Exception as e:
             print('输入歌名失败:', e)
-            self.browser.quit()
+            # self.browser.quit()
             return None
 
         # 提交查询
@@ -95,10 +98,10 @@ class ZhongTongMp3UrlThread(threading.Thread):
             submit_button.click()
         except Exception as e:
             print('提交查询失败:', e)
-            self.browser.quit()
+            # self.browser.quit()
             return None
 
-
+        time.sleep(5)
         # 点击播放按钮
         try:
             play_button = WebDriverWait(self.browser, 10).until(
@@ -112,7 +115,7 @@ class ZhongTongMp3UrlThread(threading.Thread):
                 )
             except Exception as e:
                 print('\t点击播放失败:', e)
-                self.browser.quit()
+                # self.browser.quit()
                 return None
             else:
                 play_button.click()
@@ -125,10 +128,10 @@ class ZhongTongMp3UrlThread(threading.Thread):
             mp3_url = self.browser.find_element_by_xpath('//div[@id="player"]/audio').get_attribute('src')
         except Exception as e:
             print('\t获取MP3链接失败:', e)
-            self.browser.quit()
+            # self.browser.quit()
             return None
         else:
-            self.browser.quit()
+            # self.browser.quit()
             self.music_url_queue.put((music_name, mp3_url))
 
 class DownloadMusicThread(threading.Thread):
@@ -138,6 +141,7 @@ class DownloadMusicThread(threading.Thread):
         self.music_url_queue = music_url_queue
 
     def run(self):
+        print('当前线程',threading.current_thread().name)
         while MUSIC_URL_QUEUE_NOT_EMPTY:
             try:
                 music_url = self.music_url_queue.get(False)
@@ -145,15 +149,17 @@ class DownloadMusicThread(threading.Thread):
             except:
                 pass
             else:
+                print('当前线程', threading.current_thread().name, music_url[0])
                 self.download_music(music_url[0], music_url[1])
 
     def download_music(self, music_name, mp3_url):
-        response = requests.get(url=mp3_url, verify=False)
+        response = requests.get(url=mp3_url)
         if response.status_code == 200:
             with open(os.path.join(MUSIC_DOWNLOAD_DIR, f'{music_name}.mp3'), "wb") as fp:
                 fp.write(response.content)
+                print(f'{music_name} 下载成功')
         else:
-            print(f'{music_name} {mp3_url} 下载失败')
+            print(f'{music_name} 下载失败')
 
 
 
@@ -165,17 +171,18 @@ def main():
 
     with open(MUSIC_LIST_FILE_PATH, mode='r', encoding='utf-8') as f:
         music_list = f.readlines()
+
     for music in music_list:
         music_name_queue.put(music.strip())
 
-    music_thread_name_list = ['music_thread_' + str(i) for i in range(1)]
+    music_thread_name_list = ['music_thread_' + str(i) for i in range(4)]
     music_thread_list = []
     for thread_id in music_thread_name_list:
         thread = ZhongTongMp3UrlThread(thread_id, music_name_queue, music_url_queue)
         thread.start()
         music_thread_list.append(thread)
 
-    download_thread_name_list = ['download_thread_' + str(i) for i in range(1)]
+    download_thread_name_list = ['download_thread_' + str(i) for i in range(4)]
     download_thread_list = []
     for thread_id in download_thread_name_list:
         thread = DownloadMusicThread(thread_id, music_url_queue)
@@ -185,20 +192,27 @@ def main():
 
     while not music_name_queue.empty():
         pass
+    # 如果 music_name_queue 为空，采集线程退出循环
     global MUSIC_QUEUE_NOT_EMPTY
     MUSIC_QUEUE_NOT_EMPTY = False
+    print("\nmusic_name_queue 为空")
 
+    # 让抓取主线程进入阻塞状态，等待子线程执行完毕再退出
     for t in music_thread_list:
         t.join()
-    print('爬虫程序已结束')
+    print('\n爬虫程序已结束')
 
+
+    # 如果 music_url_queue 为空，下载线程退出循环
     while not music_url_queue.empty():
         pass
     global MUSIC_URL_QUEUE_NOT_EMPTY
     MUSIC_URL_QUEUE_NOT_EMPTY = False
+
+    # 让下载主线程进入阻塞状态，等待子线程执行完毕再退出
     for t in download_thread_list:
         t.join()
-    print('下载程序已经结束')
+    print('\n下载程序已经结束')
 
 
 if __name__ == '__main__':
