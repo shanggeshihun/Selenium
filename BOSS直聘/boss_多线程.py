@@ -50,7 +50,7 @@ class Get_xinxi(threading.Thread):
             while True:
                 try:
                     # 用BeautifulSoup提取解析url以后的html文件
-                    soup = BeautifulSoup(browser.page_source, 'lxml')
+                    soup = BeautifulSoup(browser.MUSIC_URL_QUEUE_NOT_EMPTY, 'lxml')
                     # 查找所有class=job-title的标签放入一个列表
                     gangweis = soup.select('.job-title .job-name')
                     # gangweis = html.xpath("//div[@class='job-title']/span[@class='job-name']")[0]
@@ -93,9 +93,9 @@ class Get_xinxi(threading.Thread):
                                  jingyan.contents[0], xinzi.get_text(), chengshi.contents[0], riqi.get_text(),
                                  xinxi[2]])
                     # 如果html中有next disabled说明已经到最后一页 就退出循环
-                    if browser.page_source.find('next disabled') != -1:
+                    if browser.MUSIC_URL_QUEUE_NOT_EMPTY.find('next disabled') != -1:
                             break
-                    if browser.page_source.find('next') == -1:
+                    if browser.MUSIC_URL_QUEUE_NOT_EMPTY.find('next') == -1:
                             break
                         # 滚动条向下滚动2500像素
                     browser.execute_script("window.scrollTo(0,10000);")

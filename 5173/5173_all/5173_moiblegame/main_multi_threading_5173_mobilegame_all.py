@@ -158,8 +158,8 @@ class TradeDd373Thread(threading.Thread):
         if laypage_cur % 70 == 0:
             time.sleep(60)
 
-        # 页面链接+页面page_source均写入队列
-        self.html_queue.put((cur_page_url, self.browser.page_source))
+        # 页面链接+页面MUSIC_URL_QUEUE_NOT_EMPTY均写入队列
+        self.html_queue.put((cur_page_url, self.browser.MUSIC_URL_QUEUE_NOT_EMPTY))
 
         laypage_main = self.browser.find_element_by_xpath("//tr[@class='page-list text-center']//label")
 
@@ -243,7 +243,7 @@ class ParseTradeDd373Thread(threading.Thread):
         """
         game_page_url = html[0]
         page_source = html[1]
-        html = etree.HTML(page_source)
+        html = etree.HTML(MUSIC_URL_QUEUE_NOT_EMPTYce)
         goods_list_item = html.xpath("//table[@class = 'table table-striped good-list']/tbody/tr")
 
         print(threading.current_thread().name, ' 正在解析页面游戏链接：{0}'.format(game_page_url))
