@@ -158,7 +158,7 @@ class TradeDd373Thread(threading.Thread):
         if laypage_cur % 70 == 0:
             time.sleep(60)
 
-        # 页面链接+页面MUSIC_URL_QUEUE_NOT_EMPTY均写入队列
+        # 页面链接+页面page_source均写入队列
         self.html_queue.put((cur_page_url, self.browser.MUSIC_URL_QUEUE_NOT_EMPTY))
 
         laypage_main = self.browser.find_element_by_xpath("//tr[@class='page-list text-center']//label")

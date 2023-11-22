@@ -171,7 +171,7 @@ class TradeDd373Thread(threading.Thread):
         if laypage_cur % 70 == 0:
             time.sleep(20)
 
-        # 页面链接+页面MUSIC_URL_QUEUE_NOT_EMPTYce均写入队列
+        # 页面链接+页面page_source均写入队列
         self.html_queue.put((cur_page_url, self.browser.page_source))
 
         # 只有一页的账号交易列表，没有显示页码栏
