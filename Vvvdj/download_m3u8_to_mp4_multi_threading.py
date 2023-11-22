@@ -9,6 +9,7 @@
 网站首页 home_url = 'https://www.vvvdj.com/'
 起始页：网站首页&流行金曲&国语&全部&年度下载榜 start_url = 'https://www.vvvdj.com/sort/c2/4-5-0-7-1.html'
 起始页：网站首页&发烧经典&国语&全部&年度下载榜 start_url = 'https://www.vvvdj.com/sort/c2/5-5-0-6-1.html'
+起始页：网站首页&流行金曲&全部&全部&年度下热播榜 start_url = 'https://www.vvvdj.com/sort/c2/4-0-0-6-1.html'
 """
 
 from selenium import webdriver
@@ -23,7 +24,7 @@ import sys
 sys.setrecursionlimit(20000)
 
 HOME_URL = 'https://www.vvvdj.com/'
-START_URL = 'https://www.vvvdj.com/sort/c2/5-5-0-6-1.html'
+START_URL = 'https://www.vvvdj.com/sort/c2/4-0-0-6-1.html'
 DRIVER_PATH = r"C:\Users\Administrator\AppData\Local\Google\Chrome\Application\chromedriver.exe"
 
 CAPS = {
