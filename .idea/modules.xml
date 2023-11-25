@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../DataAnalysis/.idea/Data_Analysis.iml" filepath="$PROJECT_DIR$/../DataAnalysis/.idea/Data_Analysis.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Selenium.iml" filepath="$PROJECT_DIR$/.idea/Selenium.iml" />
       <module fileurl="file://$USER_HOME$/Desktop/merchant_unify/.idea/merchant_unify.iml" filepath="$USER_HOME$/Desktop/merchant_unify/.idea/merchant_unify.iml" />
     </modules>

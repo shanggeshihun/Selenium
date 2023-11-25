@@ -8,8 +8,9 @@
 """
 网站首页 home_url = 'https://www.vvvdj.com/'
 起始页：网站首页&流行金曲&国语&全部&年度下载榜 start_url = 'https://www.vvvdj.com/sort/c2/4-5-0-7-1.html'
-起始页：网站首页&发烧经典&国语&全部&年度下载榜 start_url = 'https://www.vvvdj.com/sort/c2/5-5-0-6-1.html'
+起始页：网站首页&发烧经典&国语&全部&年度下热播榜 start_url = 'https://www.vvvdj.com/sort/c2/5-5-0-6-1.html'
 起始页：网站首页&流行金曲&全部&全部&年度下热播榜 start_url = 'https://www.vvvdj.com/sort/c2/4-0-0-6-1.html'
+起始页：网站首页&发烧经典&国语&全部&年度下热播榜 start_url = 'https://www.vvvdj.com/sort/c2/5-5-0-6-1.html'
 """
 
 from selenium import webdriver
@@ -93,7 +94,7 @@ class MusicEntranceUrl():
             next_ele = self.browser.find_element_by_xpath("//div[@class='list_split_page']/form/li[@class='b']/a[contains(text(),'>')]")
             next_ele.click()
 
-            if i >=1:
+            if i >=6:
                 self.browser.quit()
                 break
 
@@ -226,7 +227,7 @@ def main():
         thread.start()
         entrance_thread_list.append(thread)
 
-    download_thread_name_list = ['download_thread_' + str(i) for i in range(2)]
+    download_thread_name_list = ['download_thread_' + str(i) for i in range(6)]
     download_thread_list = []
     for thread_id in download_thread_name_list:
         thread = DownloadM3u8Thread(thread_id, m3u8_url_queue)
@@ -248,7 +249,7 @@ def main():
 
 
     # 如果 download_thread_list 为空，下载线程退出循环
-    while not download_thread_list.empty():
+    while not m3u8_url_queue.empty():
         pass
     global M3U8_URL_QUEUE_NOT_EMPTY
     M3U8_URL_QUEUE_NOT_EMPTY = False
