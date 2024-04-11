@@ -42,7 +42,7 @@ sys.setrecursionlimit(20000)
 class TradeDd373Thread(threading.Thread):
     def __init__(self, thread_id, game_url_queue, html_queue):
         threading.Thread.__init__(self)
-        driver_path = r"C:\Users\Administrator\AppData\Local\Google\Chrome\Application\chromedriver.exe"
+        driver_path = r"E:\Program Files\chrome-win64\chromedriver.exe"
         # 使用开发者模式
         self.options = webdriver.ChromeOptions()
         self.options.add_experimental_option('excludeSwitches', ['enable-automation'])

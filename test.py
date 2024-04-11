@@ -5,37 +5,28 @@
 #@File      : get_webgame_info.py
 #@Software  : PyCharm
 
-from selenium import webdriver
+
+#
+
 import time
-browser = webdriver.Chrome(r'C:\Users\Administrator\AppData\Local\Google\Chrome\Application\chromedriver.exe')
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
-#访问百度首页
-first_url = "http://www.baidu.com"#定义一个变量，将网页指向
-browser.get(first_url)# 打开浏览器，及页面
-time.sleep(3)
+url = 'https://www.suicideboysmerchandise.com/'
+url = 'https://rockgrouphoodie.com/payments/landing/return/bdc6eb3c-5bbc-4f8a-a4ec-4bca23dd2061?spm=onerway.hosted&origin_host=aHR0cHM6Ly93d3cuc3VpY2lkZWJveXNtZXJjaGFuZGlzZS5jb20=&t_id=2bb6aa1e-1834-4acf-8bca-af9f92666130'
 
-#访问新闻首页
-second_url = "http://news.baidu.com/"#定义一个变量，将网页指向
-print("打开 %s"%(second_url))#打印网页的操作动向
-browser.get(second_url)# 打开浏览器，及页面
-time.sleep(3)
+chrome_options = Options()
+chrome_options.add_argument('--headless')  # 启用无头模式
 
-#返回，后退到百度首页
-print("back to %s"%(first_url))#打印网页的操作动向
-browser.back()#后退
-time.sleep(3)
+driver = webdriver.Chrome(r'E:\Program Files\chrome-win64\chromedriver.exe')
+driver.get(url)
 
-#前进到新闻页面
-print("forard to %s"%(second_url))#打印网页的操作动向
-browser.forward()# #前进
-time.sleep(2)
-browser.refresh()
+# 等待页面加载完成，最多等待10秒钟
 time.sleep(2)
 
-browser.quit() #关闭
-
-
-import pandas as pd
-df = pd.DataFrame()
-
-df.to_sql()
+print('11')
+print(driver.current_url)
+driver.quit()

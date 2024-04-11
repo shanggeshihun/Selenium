@@ -15,7 +15,7 @@ from lxml import etree
 
 def webgame_info():
     start_url = 'http://www.5173.com/'
-    driver_path = r"C:\Users\Administrator\AppData\Local\Google\Chrome\Application\chromedriver.exe"
+    driver_path = r"E:\Program Files\chrome-win64\chromedriver.exe"
     # 使用开发者模式
     options = webdriver.ChromeOptions()
     options.add_experimental_option('excludeSwitches', ['enable-automation'])

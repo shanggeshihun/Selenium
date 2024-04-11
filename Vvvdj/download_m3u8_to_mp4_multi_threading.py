@@ -215,12 +215,10 @@ def main():
     m3u8_url_queue = Queue()
 
     for idx, title in enumerate(TITLE_LIST):
-        if idx>2:
-            break
         href = HREF_LIST[idx]
         entrance_url_queue.put((title, href))
 
-    entrance_thread_name_list = ['entrance_thread_' + str(i) for i in range(1)]
+    entrance_thread_name_list = ['entrance_thread_' + str(i) for i in range(4)]
     entrance_thread_list = []
     for thread_id in entrance_thread_name_list:
         thread = ParseToM3u8Thread(thread_id, entrance_url_queue, m3u8_url_queue)
@@ -229,15 +227,7 @@ def main():
 
     download_thread_name_list = ['download_thread_' + str(i) for i in range(6)]
     download_thread_list = []
-    for thread_id in download_thread_name_list:
-        thread = DownloadM3u8Thread(thread_id, m3u8_url_queue)
-        thread.start()
-        download_thread_list.append(thread)
-
-
-    while not entrance_url_queue.empty():
-        pass
-    # 如果 entrance_url_queue 为空，采集线程退出循环
+     # 如果 entrance_url_queue 为空，采集线程退出循环
     global ENTRANCE_QUEUE_NOT_EMPTY
     ENTRANCE_QUEUE_NOT_EMPTY = False
     print("\nentrance_url_queue 为空")
