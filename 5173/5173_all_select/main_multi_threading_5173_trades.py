@@ -55,10 +55,8 @@ class TradeDd373Thread(threading.Thread):
         """
         while GAME_QUEUE_NOT_EMPTY:
             try:
-                thread_lock.acquire()
                 start_url = self.game_url_queue.get(False)
                 self.game_url_queue.task_done()
-                thread_lock.release()
             except:
                 pass
             else:
