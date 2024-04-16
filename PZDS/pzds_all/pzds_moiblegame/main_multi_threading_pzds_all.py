@@ -41,10 +41,8 @@ class TradePzdsThread(threading.Thread):
         """
         while GAME_QUEUE_NOT_EMPTY:
             try:
-                thread_lock.acquire()
                 game_id_name = self.game_queue.get(False)
                 self.game_queue.task_done()
-                thread_lock.release()
 
                 start_url = self.get_the_game_dealt_accounts_url(game_id_name)
                 self.get_page_source(start_url)
