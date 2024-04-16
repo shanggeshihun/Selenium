@@ -52,10 +52,8 @@ class ZhongTongMp3UrlThread(threading.Thread):
         print('当前线程',threading.current_thread().name)
         while MUSIC_QUEUE_NOT_EMPTY:
             try:
-                thread_lock.acquire()
                 music_name = self.music_name_queue.get(False)
                 self.music_name_queue.task_done()
-                thread_lock.release()
             except:
                 pass
             else:
