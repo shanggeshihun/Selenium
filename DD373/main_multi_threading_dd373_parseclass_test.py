@@ -51,10 +51,8 @@ class TradeDd373Thread(threading.Thread):
         :return:初始化browser对象
         """
         while GAME_QUEUE_NOT_EMPTY:
-            thread_lock.acquire()
             start_url = self.game_url_queue.get()
             self.game_url_queue.task_done()
-            thread_lock.release()
             print('GAME_QUEUE_NOT_EMPTY:',1)
 
             self.game_account_page(start_url)
