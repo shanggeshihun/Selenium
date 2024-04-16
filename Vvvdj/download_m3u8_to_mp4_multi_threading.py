@@ -132,10 +132,8 @@ class ParseToM3u8Thread(threading.Thread):
         print('当前线程',threading.current_thread().name)
         while ENTRANCE_QUEUE_NOT_EMPTY:
             try:
-                thread_lock.acquire()
                 entrance_url = self.entrance_url_queue.get(False)
                 self.entrance_url_queue.task_done()
-                thread_lock.release()
             except:
                 pass
             else:
