@@ -55,10 +55,8 @@ class TradeDd373Thread(threading.Thread):
         :param star_url: 某游戏起始页面
         :return: 某游戏的交易账号页面
         """
-        thread_lock.acquire()
         start_url = self.game_url_queue.get()
         self.game_url_queue.task_done()
-        thread_lock.release()
         self.browser.get(start_url)
         goods_select_value=self.browser.find_element_by_class_name("goods-select-value")
         goods_select = goods_select_value.find_elements_by_tag_name("a")
