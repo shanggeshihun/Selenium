@@ -26,7 +26,7 @@ sys.setrecursionlimit(20000)
 
 HOME_URL = 'https://www.vvvdj.com/'
 START_URL = 'https://www.vvvdj.com/sort/c2/4-0-0-6-1.html'
-DRIVER_PATH = r"C:\Users\Administrator\AppData\Local\Google\Chrome\Application\chromedriver.exe"
+DRIVER_PATH = r"E:\Program Files\chrome-win64\chromedriver.exe"
 
 CAPS = {
     "browserName": "chrome",
@@ -34,7 +34,7 @@ CAPS = {
 }
 
 M3U8_DOWNLOAD_DIR = './m3u8'
-FFMPEG_PATH = r"D:\ffmpeg\bin\ffmpeg.exe"
+FFMPEG_PATH = r"E:\ffmpeg\bin\ffmpeg.exe"
 
 # 名称及url初始化
 TITLE_LIST, HREF_LIST = [], []
@@ -46,6 +46,7 @@ class MusicEntranceUrl():
     def __init__(self):
         # 使用开发者模式
         self.options = webdriver.ChromeOptions()
+        self.options.add_experimental_option('w3c', False)
         self.options.add_experimental_option('excludeSwitches', ['enable-automation'])
         self.browser = webdriver.Chrome(desired_capabilities=CAPS, executable_path=DRIVER_PATH, options=self.options)
         self.browser.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
@@ -94,7 +95,7 @@ class MusicEntranceUrl():
             next_ele = self.browser.find_element_by_xpath("//div[@class='list_split_page']/form/li[@class='b']/a[contains(text(),'>')]")
             next_ele.click()
 
-            if i >=6:
+            if i >=2:
                 self.browser.quit()
                 break
 
@@ -115,6 +116,7 @@ class ParseToM3u8Thread(threading.Thread):
         self.setName('Crawl' + self.name)
         # 使用开发者模式
         self.options = webdriver.ChromeOptions()
+        self.options.add_experimental_option('w3c', False)
         self.options.add_experimental_option('excludeSwitches', ['enable-automation'])
         self.browser = webdriver.Chrome(desired_capabilities=CAPS, executable_path=DRIVER_PATH, options=self.options)
         self.browser.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
@@ -158,6 +160,7 @@ class ParseToM3u8Thread(threading.Thread):
             return None
 
         # 获取Network数据
+        self.options.add_experimental_option('w3c', False)
         performance_log = self.browser.get_log('performance')
         for packet in performance_log:
             message = json.loads(packet.get('message')).get('message')
@@ -171,6 +174,7 @@ class ParseToM3u8Thread(threading.Thread):
             if packet_type in types:
                 continue
             m3u8_url = message.get('params').get('response').get('url')  # 获取 该请求  url
+            print('\t\t m3u8')
             if 'm3u8' in m3u8_url:
                 self.m3u8_url_queue.put((title, m3u8_url))
                 break
@@ -225,6 +229,11 @@ def main():
 
     download_thread_name_list = ['download_thread_' + str(i) for i in range(6)]
     download_thread_list = []
+    for thread_id in download_thread_name_list:
+        thread = DownloadM3u8Thread(thread_id, m3u8_url_queue)
+        thread.start()
+        entrance_thread_list.append(thread)
+
      # 如果 entrance_url_queue 为空，采集线程退出循环
     global ENTRANCE_QUEUE_NOT_EMPTY
     ENTRANCE_QUEUE_NOT_EMPTY = False

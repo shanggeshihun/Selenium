@@ -5,7 +5,7 @@
 # @File     :test_get_network_data.py
 # @Theme    :Selenium获取Network数据（高级版）
 
-DRIVER_PATH = r"C:\Users\Administrator\AppData\Local\Google\Chrome\Application\chromedriver.exe"
+DRIVER_PATH = r"E:\Program Files\chrome-win64\chromedriver.exe"
 
 url = 'https://www.vvvdj.com/play/259632.html'
 
@@ -21,6 +21,7 @@ caps = {
     'loggingPrefs': {'performance': 'ALL'}  # 开启日志性能监听
 }
 options = Options()
+options.add_experimental_option('w3c', False)
 # options.add_experimental_option("debuggerAddress", "127.0.0.1:9527")
 browser = webdriver.Chrome(desired_capabilities=caps, options=options, executable_path=DRIVER_PATH)  # 启动浏览器
 browser.get(url)  # 访问该url
