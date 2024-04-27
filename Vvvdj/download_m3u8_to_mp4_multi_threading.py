@@ -232,7 +232,7 @@ def main():
     for thread_id in download_thread_name_list:
         thread = DownloadM3u8Thread(thread_id, m3u8_url_queue)
         thread.start()
-        entrance_thread_list.append(thread)
+        download_thread_list.append(thread)
 
     while not entrance_url_queue.empty():
         pass
