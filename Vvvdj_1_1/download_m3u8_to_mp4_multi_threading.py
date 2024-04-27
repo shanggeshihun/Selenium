@@ -36,7 +36,7 @@ CAPS = {
     'loggingPrefs': {'performance': 'ALL'}  # 开启日志性能监听
 }
 
-M3U8_DOWNLOAD_DIR = './m3u8_rhrfb_yearhot'
+M3U8_DOWNLOAD_DIR = r'F:\MUSIC\m3u8_thrfb_yearhot'
 FFMPEG_PATH = r"E:\ffmpeg\bin\ffmpeg.exe"
 
 # 名称及url初始化
