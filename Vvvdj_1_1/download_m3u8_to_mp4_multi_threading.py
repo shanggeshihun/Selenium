@@ -13,6 +13,7 @@
 起始页：网站首页&发烧经典&国语&全部&年度下热播榜 start_url = 'https://www.vvvdj.com/sort/c2/5-5-0-6-1.html'
 起始页：清风DJ音乐网 > 华语Remix > EDM/Dance/Electro/House > 上月热播榜 start_url = 'https://www.vvvdj.com/sort/c3/6-0-0-5-1.html'
 起始页：清风DJ音乐网 > 华语Remix > Trap/HipHop/Rnb/Funk/BB > 年度热播榜 start_url = 'https://www.vvvdj.com/sort/c3/8-0-0-6-1.html'
+起始页：清风DJ音乐网 > 华语Remix > EDM/Dance/Electro/House > 年度热播榜 start_url = 'https://www.vvvdj.com/sort/c3/6-0-0-6-1.html'
 """
 
 from selenium import webdriver
@@ -22,6 +23,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 import time, csv, pymysql, threading, json, os
 from queue import Queue
 from lxml import etree
+import random
 
 
 import sys
@@ -97,7 +99,7 @@ class MusicEntranceUrl():
             next_ele = self.browser.find_element_by_xpath("//div[@class='list_split_page']/form/li[@class='b']/a[contains(text(),'>')]")
             next_ele.click()
 
-            if i >= 1:
+            if i >= 7:
                 self.browser.quit()
                 break
 
@@ -204,6 +206,7 @@ class DownloadM3u8Thread(threading.Thread):
         try:
             # title 需要处理，否则无法正常保存为文件名
             title=title.replace(' ', '')
+            title = title + '_' + random.choice([chr(i) for i in range(ord('a'), ord('z')+1)])
             print(f'{FFMPEG_PATH} -allowed_extensions ALL -protocol_whitelist "file,http,crypto,https,tcp,tls" -i {m3u8_url}   {M3U8_DOWNLOAD_DIR}/{title}.mp4')
             os.system(f'{FFMPEG_PATH} -allowed_extensions ALL -protocol_whitelist "file,http,crypto,https,tcp,tls" -i {m3u8_url}   {M3U8_DOWNLOAD_DIR}/{title}.mp4')
         except Exception as e:
