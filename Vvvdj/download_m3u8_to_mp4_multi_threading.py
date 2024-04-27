@@ -234,6 +234,8 @@ def main():
         thread.start()
         entrance_thread_list.append(thread)
 
+    while not entrance_url_queue.empty():
+        pass
      # 如果 entrance_url_queue 为空，采集线程退出循环
     global ENTRANCE_QUEUE_NOT_EMPTY
     ENTRANCE_QUEUE_NOT_EMPTY = False
