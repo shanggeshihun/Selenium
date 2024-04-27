@@ -143,6 +143,7 @@ class ParseToM3u8Thread(threading.Thread):
                 self.search_m3u8(entrance_url)
 
         if self.browser:
+            self.browser.quit()
             return
 
     def search_m3u8(self, entrance_url):
